@@ -20,9 +20,9 @@ class MainShell extends StatelessWidget {
         },
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.warning_amber),
+            selectedIcon: Icon(Icons.warning),
+            label: 'Panic',
           ),
           NavigationDestination(
             icon: Icon(Icons.contacts_outlined),
@@ -30,8 +30,8 @@ class MainShell extends StatelessWidget {
             label: 'Kontak',
           ),
           NavigationDestination(
-            icon: Icon(Icons.menu_book_outlined),
-            selectedIcon: Icon(Icons.menu_book),
+            icon: Icon(Icons.menu_book_rounded),
+            selectedIcon: Icon(Icons.menu_book_rounded),
             label: 'Panduan',
           ),
           NavigationDestination(
@@ -41,7 +41,7 @@ class MainShell extends StatelessWidget {
           ),
           NavigationDestination(
             icon: Icon(Icons.grid_view_outlined),
-            selectedIcon: Icon(Icons.grid_view),
+            selectedIcon: Icon(Icons.grid_view_rounded),
             label: 'Tools',
           ),
         ],

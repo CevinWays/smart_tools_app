@@ -33,7 +33,7 @@ class ContactsCubit extends Cubit<ContactsState> {
     try {
       final newContact = Contact(name: name, phone: phone, type: 'personal');
       await _repository.addContact(newContact);
-      loadContacts();
+      await loadContacts();
     } catch (e) {
       emit(state.copyWith(errorMessage: 'Failed to add contact: $e'));
     }
@@ -42,7 +42,7 @@ class ContactsCubit extends Cubit<ContactsState> {
   Future<void> deleteContact(Contact contact) async {
     try {
       await _repository.deleteContact(contact);
-      loadContacts();
+      await loadContacts();
     } catch (e) {
       emit(state.copyWith(errorMessage: 'Failed to delete contact: $e'));
     }

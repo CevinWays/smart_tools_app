@@ -11,6 +11,8 @@ class HomeState extends Equatable {
   final String? errorMessage;
   final bool isFlashlightOn;
   final bool isPanicActive;
+  final bool isSOSCountdownActive;
+  final int sosCountdownValue;
 
   const HomeState({
     this.status = HomeStatus.initial,
@@ -19,6 +21,8 @@ class HomeState extends Equatable {
     this.errorMessage,
     this.isFlashlightOn = false,
     this.isPanicActive = false,
+    this.isSOSCountdownActive = false,
+    this.sosCountdownValue = 3,
   });
 
   HomeState copyWith({
@@ -28,6 +32,8 @@ class HomeState extends Equatable {
     String? errorMessage,
     bool? isFlashlightOn,
     bool? isPanicActive,
+    bool? isSOSCountdownActive,
+    int? sosCountdownValue,
   }) {
     return HomeState(
       status: status ?? this.status,
@@ -36,6 +42,8 @@ class HomeState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
       isFlashlightOn: isFlashlightOn ?? this.isFlashlightOn,
       isPanicActive: isPanicActive ?? this.isPanicActive,
+      isSOSCountdownActive: isSOSCountdownActive ?? this.isSOSCountdownActive,
+      sosCountdownValue: sosCountdownValue ?? this.sosCountdownValue,
     );
   }
 
@@ -47,5 +55,7 @@ class HomeState extends Equatable {
     errorMessage,
     isFlashlightOn,
     isPanicActive,
+    isSOSCountdownActive,
+    sosCountdownValue,
   ];
 }

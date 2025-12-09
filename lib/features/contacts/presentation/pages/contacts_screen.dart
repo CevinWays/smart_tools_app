@@ -27,7 +27,9 @@ class _ContactsView extends StatelessWidget {
       appBar: AppBar(title: const Text('Emergency Contacts')),
       body: BlocBuilder<ContactsCubit, ContactsState>(
         builder: (context, state) {
-          if (state.status == ContactsStatus.loading) {
+          if (state.status == ContactsStatus.loading &&
+              state.personalContacts.isEmpty &&
+              state.defaultContacts.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
 
@@ -110,14 +112,16 @@ class _ContactsView extends StatelessWidget {
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (nameController.text.isNotEmpty &&
                   phoneController.text.isNotEmpty) {
-                context.read<ContactsCubit>().addContact(
+                await context.read<ContactsCubit>().addContact(
                   nameController.text,
                   phoneController.text,
                 );
-                Navigator.pop(context);
+                if (context.mounted) {
+                  Navigator.pop(context);
+                }
               }
             },
             child: const Text('Add'),

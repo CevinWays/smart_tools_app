@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_tools_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:smart_tools_app/features/home/presentation/cubit/home_state.dart';
+import 'package:smart_tools_app/features/profile/data/repositories/profile_repository.dart';
 
+import 'package:image_picker/image_picker.dart';
+import 'package:smart_tools_app/features/sound_recorder/sound_recorder_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..initLocation(),
+      create: (context) => HomeCubit(ProfileRepository())..initLocation(),
       child: const _HomeView(),
     );
   }
@@ -26,7 +29,15 @@ class _HomeView extends StatelessWidget {
       body: SafeArea(
         child: BlocConsumer<HomeCubit, HomeState>(
           listener: (context, state) {
-            if (state.errorMessage != null) {
+            if (state.status == HomeStatus.panic) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('SOS TRIGGERED! Sending alerts...'),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 5),
+                ),
+              );
+            } else if (state.errorMessage != null) {
               ScaffoldMessenger.of(
                 context,
               ).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
@@ -104,28 +115,69 @@ class _HomeView extends StatelessWidget {
   }
 
   Widget _buildPanicButton(BuildContext context, HomeState state) {
+    if (state.isSOSCountdownActive) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  width: 200,
+                  height: 200,
+                  child: CircularProgressIndicator(
+                    value: state.sosCountdownValue / 3,
+                    strokeWidth: 12,
+                    valueColor: const AlwaysStoppedAnimation<Color>(Colors.red),
+                    backgroundColor: Colors.red.shade100,
+                  ),
+                ),
+                Text(
+                  '${state.sosCountdownValue}',
+                  style: const TextStyle(
+                    fontSize: 80,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
+            ElevatedButton.icon(
+              onPressed: () => context.read<HomeCubit>().cancelSOSCountdown(),
+              icon: const Icon(Icons.close),
+              label: const Text('Cancel SOS'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[800],
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 32,
+                  vertical: 16,
+                ),
+                textStyle: const TextStyle(fontSize: 20),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
     return Center(
       child: GestureDetector(
-        onLongPressStart: (_) => context.read<HomeCubit>().setPanicActive(true),
-        onLongPressEnd: (_) => context.read<HomeCubit>().setPanicActive(false),
-        onLongPress: () {
-          // Trigger Panic Action
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('SOS TRIGGERED! Sending alerts...')),
-          );
-        },
+        onTap: () => context.read<HomeCubit>().startSOSCountdown(),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          width: state.isPanicActive ? 220 : 200,
-          height: state.isPanicActive ? 220 : 200,
+          width: 200,
+          height: 200,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: const Color(0xFFD32F2F),
             boxShadow: [
               BoxShadow(
                 color: const Color(0xFFD32F2F).withValues(alpha: 0.4),
-                blurRadius: state.isPanicActive ? 30 : 20,
-                spreadRadius: state.isPanicActive ? 10 : 5,
+                blurRadius: 20,
+                spreadRadius: 5,
               ),
             ],
             border: Border.all(color: Colors.white, width: 4),
@@ -162,23 +214,28 @@ class _HomeView extends StatelessWidget {
                 icon: Icons.camera_alt,
                 label: 'Camera',
                 onTap: () async {
-                  // Placeholder for Camera intent
-                  // For now just request permission as a dummy action
-                  await Permission.camera.request();
+                  final ImagePicker picker = ImagePicker();
+                  await picker.pickImage(source: ImageSource.camera);
                 },
               ),
               _ActionButton(
                 icon: Icons.mic,
                 label: 'Voice',
                 onTap: () async {
-                  await Permission.microphone.request();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SoundRecorderScreen(),
+                    ),
+                  );
                 },
               ),
               _ActionButton(
                 icon: Icons.videocam,
                 label: 'Video',
                 onTap: () async {
-                  await Permission.camera.request();
+                  final ImagePicker picker = ImagePicker();
+                  await picker.pickVideo(source: ImageSource.camera);
                 },
               ),
             ],
