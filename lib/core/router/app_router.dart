@@ -11,6 +11,8 @@ import 'package:smart_tools_app/features/profile/presentation/cubit/profile_cubi
 import 'package:smart_tools_app/features/profile/data/repositories/profile_repository.dart';
 import 'package:smart_tools_app/features/profile/domain/entities/user_profile.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:smart_tools_app/features/guides/presentation/pages/guide_detail_screen.dart';
+import 'package:smart_tools_app/features/guides/domain/entities/guide_entity.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -41,6 +43,15 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: '/guides',
               builder: (context, state) => const GuidesScreen(),
+              routes: [
+                GoRoute(
+                  path: 'detail',
+                  builder: (context, state) {
+                    final guide = state.extra as Guide;
+                    return GuideDetailScreen(guide: guide);
+                  },
+                ),
+              ],
             ),
           ],
         ),

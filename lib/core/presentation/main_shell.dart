@@ -27,17 +27,17 @@ class MainShell extends StatelessWidget {
           NavigationDestination(
             icon: Icon(Icons.contacts_outlined),
             selectedIcon: Icon(Icons.contacts),
-            label: 'Contacts',
+            label: 'Kontak',
           ),
           NavigationDestination(
             icon: Icon(Icons.menu_book_outlined),
             selectedIcon: Icon(Icons.menu_book),
-            label: 'Guides',
+            label: 'Panduan',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),
             selectedIcon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'Data Diri',
           ),
           NavigationDestination(
             icon: Icon(Icons.grid_view_outlined),
