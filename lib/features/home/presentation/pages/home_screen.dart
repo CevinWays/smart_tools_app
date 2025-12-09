@@ -63,7 +63,9 @@ class _HomeView extends StatelessWidget {
             return Column(
               children: [
                 _buildHeader(context, state),
-                const WeatherWidget(), // Add Weather Widget
+                WeatherWidget(
+                  locationName: state.placemark?.locality,
+                ), // Add Weather Widget
                 Expanded(child: _buildPanicButton(context, state)),
                 _buildQuickActions(context, state),
               ],

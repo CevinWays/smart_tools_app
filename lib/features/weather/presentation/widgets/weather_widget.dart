@@ -5,7 +5,9 @@ import 'package:smart_tools_app/features/weather/presentation/cubit/weather_cubi
 import 'package:smart_tools_app/features/weather/presentation/cubit/weather_state.dart';
 
 class WeatherWidget extends StatelessWidget {
-  const WeatherWidget({super.key});
+  final String? locationName;
+
+  const WeatherWidget({super.key, this.locationName});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,10 @@ class WeatherWidget extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         } else if (state is WeatherLoaded) {
           return GestureDetector(
-            onTap: () => context.push('/weather', extra: state.weather),
+            onTap: () => context.push(
+              '/weather',
+              extra: {'weather': state.weather, 'location': locationName},
+            ),
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -46,6 +51,26 @@ class WeatherWidget extends StatelessWidget {
                     _getWeatherDescription(state.weather.currentWeatherCode),
                     style: TextStyle(fontSize: 14, color: Colors.blue.shade700),
                   ),
+                  if (locationName != null) ...[
+                    const SizedBox(width: 8),
+                    Container(
+                      width: 1,
+                      height: 16,
+                      color: Colors.blue.shade200,
+                    ),
+                    const SizedBox(width: 8),
+                    Flexible(
+                      child: Text(
+                        locationName!,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue.shade800,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

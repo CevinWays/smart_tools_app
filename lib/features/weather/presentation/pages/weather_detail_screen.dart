@@ -4,8 +4,13 @@ import 'package:smart_tools_app/features/weather/domain/entities/weather_entity.
 
 class WeatherDetailScreen extends StatelessWidget {
   final WeatherEntity weather;
+  final String? locationName;
 
-  const WeatherDetailScreen({super.key, required this.weather});
+  const WeatherDetailScreen({
+    super.key,
+    required this.weather,
+    this.locationName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +43,17 @@ class WeatherDetailScreen extends StatelessWidget {
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
+          if (locationName != null) ...[
+            Text(
+              locationName!,
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.blue.shade900,
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
           Icon(
             _getWeatherIcon(weather.currentWeatherCode),
             size: 80,

@@ -33,8 +33,13 @@ final GoRouter appRouter = GoRouter(
             GoRoute(
               path: '/weather',
               builder: (context, state) {
-                final weather = state.extra as WeatherEntity;
-                return WeatherDetailScreen(weather: weather);
+                final extras = state.extra as Map<String, dynamic>;
+                final weather = extras['weather'] as WeatherEntity;
+                final location = extras['location'] as String?;
+                return WeatherDetailScreen(
+                  weather: weather,
+                  locationName: location,
+                );
               },
             ),
           ],
