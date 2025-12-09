@@ -71,5 +71,13 @@ Aplikasi ini dibangun menggunakan teknologi modern:
 - `lib/core/`: Komponen inti seperti Router, Theme, dan Utilities.
 - `lib/main.dart`: Entry point aplikasi.
 
+## Kontribusi
+
+Kami sangat terbuka untuk kontribusi dari komunitas! Silakan baca [CONTRIBUTING.md](CONTRIBUTING.md) untuk panduan cara berkontribusi, melaporkan bug, atau mengajukan fitur baru.
+
+## Lisensi
+
+Proyek ini dilisensikan di bawah **MIT License**. Lihat file [LICENSE](LICENSE) untuk detail selengkapnya.
+
 ---
 *Dikembangkan untuk membantu masyarakat agar selalu Siaga.*
