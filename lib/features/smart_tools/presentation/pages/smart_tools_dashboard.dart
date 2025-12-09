@@ -19,8 +19,8 @@ import 'package:smart_tools_app/features/battery_info/battery_info_screen.dart';
 import 'package:smart_tools_app/features/network_speed/network_speed_screen.dart';
 import 'package:smart_tools_app/features/text_scanner/text_scanner_screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class SmartToolsDashboard extends StatelessWidget {
+  const SmartToolsDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
