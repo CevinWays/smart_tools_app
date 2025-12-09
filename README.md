@@ -1,91 +1,75 @@
-# Smart Tools App
+# SiagaWarga
 
-Ringkasan singkat proyek ini.
+**SiagaWarga** adalah aplikasi serbaguna yang dirancang untuk membantu dalam situasi darurat dan kebutuhan sehari-hari. Aplikasi ini menggabungkan fitur keselamatan canggih dengan kumpulan alat utilitas yang lengkap.
 
-**Overview**
-- **Nama proyek**: `smart_tools_app`
-- **Deskripsi**: Aplikasi Flutter yang berisi kumpulan fitur utilitas (tooling) untuk perangkat mobile dan web. Kode sumber utama berada di `lib/` dan konfigurasi platform berada di folder `android/`, `ios/`, `linux/`, `macos/`, dan `web/`.
-- **Entry point**: `lib/main.dart`.
+## Fitur Utama
 
-**Prerequisites**
-- **Flutter SDK**: versi yang kompatibel dengan `pubspec.yaml` (jalankan `flutter --version`).
-- **Android**: Android SDK + Android Studio (untuk emulator dan signing). Pastikan `ANDROID_SDK_ROOT`/`ANDROID_HOME` ter-set di `local.properties` atau environment.
-- **iOS**: macOS dengan Xcode (hanya bila membuild untuk iOS).
-- **Web/Desktop**: Chrome untuk web; toolchain desktop (Linux/Mac/Windows) jika ingin build desktop.
+### 🚨 Keselamatan & Darurat (SOS)
+Fitur unggulan untuk kondisi darurat:
+- **Tombol Panik (SOS)**: Tombol besar yang mudah diakses di halaman utama.
+- **Countdown Timer**: Hitung mundur 3 detik sebelum mengirim sinyal untuk mencegah alarm palsu.
+- **Smart Sharing**: Mengirimkan pesan darurat yang berisi:
+  - Lokasi terkini (Google Maps link).
+  - Data Diri (Nama, Golongan Darah).
+  - Kontak Darurat.
+  - Riwayat Medis, Alergi, dan Obat Rutin.
+- **Quick Actions**: Akses cepat ke Kamera, Perekam Suara, dan Video untuk dokumentasi kejadian.
 
-**Persiapan awal (sekali saja)**
-1. Clone repo:
+### 🌤️ Cuaca Terkini (Weather)
+Informasi cuaca akurat yang terintegrasi langsung di Home Screen:
+- **Compact Widget**: Tampilan ringkas suhu dan kondisi cuaca saat ini.
+- **Detail Cuaca**: Halaman detail yang menampilkan:
+  - Prakiraan cuaca per jam (Hourly Forecast).
+  - Prakiraan cuaca 3 hari ke depan (Daily Forecast).
+  - Informasi Kelembaban, Kecepatan Angin, dan Kualitas Udara (AQI).
+- **Auto-Location**: Mendeteksi lokasi otomatis untuk data cuaca yang presisi.
+- **Powered by Open-Meteo**: Menggunakan API cuaca open-source yang handal.
 
-   `git clone https://github.com/CevinWays/smart_tools_app.git`
-2. Masuk ke folder proyek:
+### 🛠️ Alat Utilitas (Smart Tools)
+Kumpulan alat bantu untuk produktivitas dan pengukuran:
+- **Kalkulator**: Standard, Scientific, BMI, dan Age Calculator.
+- **Pengukur**: Compass, Leveler (Waterpass), Ruler (Penggaris), Sound Meter (Desibel), Speedometer.
+- **Scanner**: QR Scanner dan Text Scanner (OCR).
+- **Info Perangkat**: Battery Info, Network Speed, System Info.
+- **Lainnya**: Flashlight, Stopwatch, Converter.
 
-   `cd smart_tools_app`
-3. Install dependencies:
+### 👤 Profil Pengguna
+- Manajemen data diri lengkap termasuk informasi medis vital yang digunakan saat SOS.
+- Penyimpanan lokal yang aman menggunakan **Hive**.
 
-   `flutter pub get`
-4. (Opsional) Periksa setup environment:
+## Teknologi
 
-   `flutter doctor`  
+Aplikasi ini dibangun menggunakan teknologi modern:
+- **Framework**: Flutter
+- **State Management**: BLoC / Cubit
+- **Local Storage**: Hive
+- **API**: Open-Meteo (Weather)
+- **Navigation**: GoRouter
+- **Location**: Geolocator & Geocoding
 
-**Menjalankan aplikasi (development)**
+## Cara Menjalankan
 
-- Jalankan pada perangkat/emulator Android yang terhubung:
+1.  **Clone Repository**
+    ```bash
+    git clone https://github.com/CevinWays/smart_tools_app.git
+    cd smart_tools_app
+    ```
 
-  `flutter run`  
+2.  **Install Dependencies**
+    ```bash
+    flutter pub get
+    ```
 
-- Menjalankan di device spesifik (list devices terlebih dahulu):
+3.  **Jalankan Aplikasi**
+    ```bash
+    flutter run
+    ```
 
-  `flutter devices`
-  `flutter run -d <device-id>`
+## Struktur Proyek
 
-- Menjalankan di web (Chrome):
+- `lib/features/`: Berisi modul-modul fitur (Home, Weather, Profile, Tools, dll).
+- `lib/core/`: Komponen inti seperti Router, Theme, dan Utilities.
+- `lib/main.dart`: Entry point aplikasi.
 
-  `flutter run -d chrome`
-
-**Build release**
-
-- Android APK (release):
-
-  `flutter build apk --release`
-
-- Android App Bundle (untuk Play Store):
-
-  `flutter build appbundle --release`
-
-  Catatan: untuk signing, atur `key.properties` dan `signingConfigs` di `android/app/build.gradle.kts` atau ikuti panduan resmi Flutter untuk signing.
-
-- iOS (hanya di macOS):
-
-  1. Buka workspace Xcode: `open ios/Runner.xcworkspace`
-  2. Atur signing di Xcode, lalu jalankan/arsipkan atau jalankan:
-
-     `flutter build ios --release`
-
-- Web (release):
-
-  `flutter build web --release`
-
-- Desktop (Linux/Mac/Windows):
-
-  `flutter build linux`  
-  `flutter build macos`  
-  `flutter build windows`
-
-**Debug & troubleshooting singkat**
-- Jika dependency bermasalah: `flutter pub get` lalu `flutter clean` kemudian `flutter pub get` lagi.
-- Jika ada plugin native yang berubah, jalankan `flutter pub get` dan rebuild platform native (contoh: `flutter build apk`).
-- Periksa log saat menjalankan: gunakan terminal yang menjalankan `flutter run` atau `adb logcat` untuk log Android.
-
-**Catatan penting**
-- File konfigurasi platform ada di `android/` dan `ios/`. Jika membuild di mesin baru, pastikan `local.properties` berisi path SDK yang benar.
-- Beberapa plugin memerlukan izin runtime (contoh: kamera, storage). Pastikan permission ditambahkan di manifest/Info.plist sesuai plugin.
-
---
-Jika Anda ingin, saya bisa:
-- menambahkan bagian CI/CD (GitHub Actions) untuk otomatis build.
-- menulis panduan signing APK/AAB secara lengkap.
-
-Terima kasih! Beritahu saya jika mau ditambahkan detail lain atau terjemahan bahasa Inggris.
-# smart_tools_app
-
-A new Flutter project.
+---
+*Dikembangkan untuk membantu masyarakat agar selalu Siaga.*
