@@ -13,6 +13,8 @@ import 'package:smart_tools_app/features/profile/domain/entities/user_profile.da
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_tools_app/features/guides/presentation/pages/guide_detail_screen.dart';
 import 'package:smart_tools_app/features/guides/domain/entities/guide_entity.dart';
+import 'package:smart_tools_app/features/weather/presentation/pages/weather_detail_screen.dart';
+import 'package:smart_tools_app/features/weather/domain/entities/weather_entity.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -28,6 +30,13 @@ final GoRouter appRouter = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
+            GoRoute(
+              path: '/weather',
+              builder: (context, state) {
+                final weather = state.extra as WeatherEntity;
+                return WeatherDetailScreen(weather: weather);
+              },
+            ),
           ],
         ),
         StatefulShellBranch(

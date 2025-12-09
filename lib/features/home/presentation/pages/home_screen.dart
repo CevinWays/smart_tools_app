@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smart_tools_app/features/home/presentation/cubit/home_cubit.dart';
 import 'package:smart_tools_app/features/home/presentation/cubit/home_state.dart';
 import 'package:smart_tools_app/features/profile/data/repositories/profile_repository.dart';
+import 'package:smart_tools_app/features/weather/data/repositories/weather_repository.dart';
+import 'package:smart_tools_app/features/weather/presentation/cubit/weather_cubit.dart';
+import 'package:smart_tools_app/features/weather/presentation/widgets/weather_widget.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:smart_tools_app/features/sound_recorder/sound_recorder_screen.dart';
@@ -13,8 +16,13 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomeCubit(ProfileRepository())..initLocation(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => HomeCubit(ProfileRepository())..initLocation(),
+        ),
+        BlocProvider(create: (context) => WeatherCubit(WeatherRepository())),
+      ],
       child: const _HomeView(),
     );
   }
@@ -29,6 +37,14 @@ class _HomeView extends StatelessWidget {
       body: SafeArea(
         child: BlocConsumer<HomeCubit, HomeState>(
           listener: (context, state) {
+            if (state.status == HomeStatus.loaded && state.position != null) {
+              // Fetch weather when location is loaded
+              context.read<WeatherCubit>().fetchWeather(
+                state.position!.latitude,
+                state.position!.longitude,
+              );
+            }
+
             if (state.status == HomeStatus.panic) {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
@@ -47,6 +63,7 @@ class _HomeView extends StatelessWidget {
             return Column(
               children: [
                 _buildHeader(context, state),
+                const WeatherWidget(), // Add Weather Widget
                 Expanded(child: _buildPanicButton(context, state)),
                 _buildQuickActions(context, state),
               ],
@@ -63,6 +80,15 @@ class _HomeView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const Text(
+            'SiagaWarga',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+            ),
+          ),
+          const SizedBox(height: 16),
           Row(
             children: [
               const Icon(Icons.my_location, color: Colors.red),
@@ -76,11 +102,11 @@ class _HomeView extends StatelessWidget {
                   fontSize: 16,
                 ),
               ),
-              const Spacer(),
-              IconButton(
-                icon: const Icon(Icons.share),
-                onPressed: () => context.read<HomeCubit>().shareLocation(),
-              ),
+              // const Spacer(),
+              // IconButton(
+              //   icon: const Icon(Icons.share),
+              //   onPressed: () => context.read<HomeCubit>().shareLocation(),
+              // ),
             ],
           ),
           const SizedBox(height: 8),
